@@ -1,6 +1,15 @@
 # Gold ML Project
 
-Historical market data pipeline using Python and the Yahoo Finance API.
+Historical market data pipeline + Machine-Learning model using Python and the Yahoo Finance API.
+
+---
+
+## What it does
+
+| Step | Script | Output |
+|------|--------|--------|
+| 1 – Download data | `download_data.py` | `data/market_data.csv` |
+| 2 – Train ML model | `train_model.py` | `data/models/` |
 
 ---
 
@@ -29,20 +38,46 @@ All series are merged into a single CSV file at `data/market_data.csv`.
 pip install -r requirements.txt
 ```
 
-### 2. Run the download script
+### 2. Download historical market data
 
 ```bash
 python download_data.py
 ```
 
-### 3. Check the output
+Output: `data/market_data.csv` — one row per trading day with OHLCV columns
+for each ticker (e.g. `gold_close`, `sp500_volume`).
 
-```
-data/market_data.csv
+### 3. Train the ML model
+
+```bash
+python train_model.py
 ```
 
-Each row is one trading day. Columns follow the pattern `<name>_<metric>`,
-for example `gold_close`, `sp500_volume`, `dxy_open`, etc.
+The model predicts the **next trading day's Gold closing price**.
+
+Output files in `data/models/`:
+
+| File | Description |
+|------|-------------|
+| `gold_price_model.joblib` | Trained sklearn pipeline (scaler + Random Forest) |
+| `metrics.json` | Test-set evaluation metrics (MAE, RMSE, MAPE, R²) |
+| `actual_vs_predicted.png` | Actual vs predicted price chart |
+| `feature_importance.png` | Top-20 most important features |
+
+---
+
+## ML model details
+
+**Task**: Regression – predict next-day Gold close price  
+**Algorithm**: Random Forest Regressor (300 trees)  
+**Train/test split**: Chronological (first 80 % train, last 20 % test)
+
+**Features engineered** from the raw data:
+
+- Gold technical indicators: 5/10/20/50-day moving averages, Bollinger Bands, RSI-14, rolling volatility
+- Gold lag features: close price of the last 1–5 days
+- Gold multi-period returns: 1-day, 5-day, 10-day, 20-day
+- Cross-asset closing prices and 1-day / 5-day returns: S&P 500, Nasdaq, DXY, Crude Oil, US 10Y Yield, VIX
 
 ---
 
@@ -51,6 +86,10 @@ for example `gold_close`, `sp500_volume`, `dxy_open`, etc.
 - Python 3.10+
 - `yfinance >= 0.2.0`
 - `pandas >= 1.3.0`
+- `scikit-learn >= 1.2.0`
+- `matplotlib >= 3.5.0`
+- `joblib >= 1.2.0`
+- `numpy >= 1.23.0`
 
 ---
 
@@ -61,3 +100,5 @@ for example `gold_close`, `sp500_volume`, `dxy_open`, etc.
 - The date range defaults to **2010-01-01 → 2026-03-15**. Edit `START_DATE`
   and `END_DATE` at the top of `download_data.py` to change it.
 - The `data/` directory is created automatically if it does not exist.
+- Generated CSV and model files are excluded from version control via `.gitignore`.
+

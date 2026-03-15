@@ -15,6 +15,12 @@ venv/
 data/*.csv
 data/*.parquet
 
+# Generated model artifacts
+data/models/*.joblib
+data/models/*.pkl
+data/models/*.png
+data/models/metrics.json
+
 # IDE / OS
 .vscode/
 .idea/
