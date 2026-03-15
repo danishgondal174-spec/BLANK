@@ -1,0 +1,19 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Generated data files (download with scripts/download_market_data.py)
+data/*.csv
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
