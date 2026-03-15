@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+venv/
+
+# Generated data files (too large for version control)
+data/*.csv
+data/*.parquet
+
+# Generated model artifacts
+data/models/*.joblib
+data/models/*.pkl
+data/models/*.png
+data/models/metrics.json
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
